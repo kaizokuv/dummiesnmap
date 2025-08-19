@@ -1,0 +1,9 @@
+[
+    {
+        "timestamp": "2025-08-19 14:13:41",
+        "target": "138.199.21.217",
+        "flags": "-sU -sX -p 20,80,564,54 -sV --version-all -O --osscan-guess -T 5 --defeat-rst-ratelimit --reason --open -A",
+        "command": "sudo nmap 138.199.21.217 -sU -sX -p 20,80,564,54 -sV --version-all -O --osscan-guess -T 5 --defeat-rst-ratelimit --reason --open -A",
+        "output": "Starting Nmap 7.97 ( https://nmap.org ) at 2025-08-19 14:05 +0800\nNmap scan report for unn-138-199-21-217.datapacket.com (138.199.21.217)\nHost is up, received echo-reply ttl 56 (0.10s latency).\n\nPORT    STATE         SERVICE    REASON      VERSION\n20/tcp  open|filtered tcpwrapped no-response\n54/tcp  open|filtered tcpwrapped no-response\n80/tcp  open|filtered tcpwrapped no-response\n564/tcp open|filtered tcpwrapped no-response\n20/udp  open|filtered ftp-data   no-response\n54/udp  open|filtered xns-ch     no-response\n80/udp  open|filtered http       no-response\n564/udp open|filtered 9pfs       no-response\nToo many fingerprints match this host to give specific OS details\nNetwork Distance: 11 hops\n\nTRACEROUTE (using proto 1/icmp)\nHOP RTT       ADDRESS\n1   6.09 ms   192.168.180.18\n2   6.10 ms   192.168.180.18\n3   8.77 ms   10.233.41.40\n4   16.33 ms  10.55.51.23\n5   11.61 ms  10.55.52.31\n6   16.34 ms  10.55.100.40\n7   45.63 ms  hu0-2-0-1.br05.hkg05.as3491.net (63.218.43.17)\n8   111.61 ms BE41.br05.tok02.as3491.net (63.218.250.210)\n9   344.95 ms 63-216-242-194.static.as3491.net (63.216.242.194)\n10  98.75 ms  vl207.tyo-eq8-dist-2.cdn77.com (169.150.194.143)\n11  101.51 ms unn-138-199-21-217.datapacket.com (138.199.21.217)\n\nOS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .\nNmap done: 1 IP address (1 host up) scanned in 463.35 seconds\n"
+    }
+]
