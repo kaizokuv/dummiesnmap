@@ -40,7 +40,9 @@ def main():
                 if iL != "n": base_cmd.extend(["-iL", iL])
                 if iR != "n":
                     if iR == "0":
+                        print("")
                         print("Running -iR with 0 will run it infinitely until stopped with Ctrl + C")
+                        print("")
                     base_cmd.extend(["-iR", iR])
                 if excludetarget != "n": base_cmd.extend(["--exclude", excludetarget])
                 if excludefile != "n": base_cmd.extend(["--excludefile", excludefile])
