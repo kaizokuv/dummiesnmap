@@ -17,6 +17,7 @@ Feature list is short but plentiful
     - All of the user history will be saved in a .json file in the dummiesnmap folder
   - (I'm working on a way to let you change the target for a given command to easily run that command again with a different target)
 - Most importantly: Dumbed-down explanation of what each flag does so you know what it does when you choose it :D
+- More to come :D
 
 ## Why this exists
 The third of many random posts that track my progress as a programmer. Now a crazy but also practical and ready-made program :D
