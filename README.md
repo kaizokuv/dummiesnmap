@@ -6,7 +6,18 @@ A dumbed-down version of the very popular Nmap tool for the people like me, who 
 Feature list is short but plentiful
 - Base Nmap features and flags
 - Guided menu and lists for categories of flags
-  - (I'm working on the ability to jump to a certain category of flags so you don't have to sit through everything)
+  - Given the option to jump to different categories list below:
+    - Target Specifications
+    - Scan Techniques
+    - Host Discovery
+    - Port Specification and Scan Order
+    - Service and Version Detection
+    - OS Detection
+    - Script Scanning (NSE)
+    - Timing and Performance
+    - Firewall and IDS Evasion
+    - Outputs
+    - Miscellaneous
 - Built in history
   - Allows for user to check the following for a previous nmap run
     - Timestamp
@@ -16,6 +27,11 @@ Feature list is short but plentiful
   - Cross session, so you won't have to worry about it getting erased after a session has ended
     - All of the user history will be saved in a .json file in the dummiesnmap folder
   - (I'm working on a way to let you change the target for a given command to easily run that command again with a different target)
+- Allow for users to add in and run/save their own commands that they've used before by just inputting it
+  - No need to add in "sudo nmap" as the program takes care of that
+- Command clearing (a hotfix until I can solve the issue of no overwriting when you want to remove a flag or change a value)
+- Fully modular code, making it more efficient and prettier on the source side
+  - Also allows for an easier time to customise the code yourself if wanted
 - Most importantly: Dumbed-down explanation of what each flag does so you know what it does when you choose it :D
 - More to come :D
 

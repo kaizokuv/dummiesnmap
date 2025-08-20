@@ -1,5 +1,9 @@
-import subprocess
+from modules.ctx import ScanContext
 from modules import saves
+from modules import custom
+from modules import exceptions
+from modules.exceptions import backtomain
+from modules import targetspec, scantech, hostdiscovery, portspecandscanorder, serviceverdetect, osdetec, nse, timingandperf, firewallandidsevas, outputs, others
 
 print("██████╗ ██╗   ██╗███╗   ███╗███╗   ███╗██╗███████╗███████╗███╗   ██╗███╗   ███╗ █████╗ ██████╗")
 print("██╔══██╗██║   ██║████╗ ████║████╗ ████║██║██╔════╝██╔════╝████╗  ██║████╗ ████║██╔══██╗██╔══██╗")
@@ -12,565 +16,85 @@ print("By Kaizokuv")
 print("Github: https://github.com/kaizokuv")
 print("")
 
-def build_target_cmd():
-    cmd = ["sudo", "nmap"]
-    return cmd
-
 def main():
+
+    ctx = ScanContext()
+
     while True:
-        print("--- Main Menu ---")
-        print("1. Start scan")
-        print("2. History")
-        print("3. Exit")
-        menuchoice = input("> ")
-        print("")
+        try:
+            print("")
+            print("--- Main Menu ---")
+            print("1. Build new command")
+            print("2. Clear current command")
+            print("3. Run and save inputted command")
+            print("4. History")
+            print("5. Exit")
+            menuchoice = input("> ")
+            print("")
 
-        match menuchoice:
-            case "1":
-                print("--- Target Specifications ---")
-                print("")
-                target = input("Enter target IP/domain (enter n to leave empty): ")
-                iL = input("Enter targets to scan from a given file path (enter n to leave empty): ")
-                iR = input("Enter the amount of random hosts you want to target (enter 0 for endless targets and n to leave empty): ")
-                excludetarget = input("Enter targets to exclude from search separated by commas (e.g: 192.168.0.1,192.168.0.2)(enter n to leave empty): ")
-                excludefile = input("Enter targets to exclude from a given file path (enter n to leave empty): ")
+            match menuchoice:
+                case "1":
+                    print("-- Flag Categories --")
+                    print("1. Target Specifications")
+                    print("2. Scan Techniques")
+                    print("3. Host Discovery")
+                    print("4. Port Specification and Scan Order")
+                    print("5. Service and Version Detection")
+                    print("6. OS Detection")
+                    print("7. Script Scanning (NSE)")
+                    print("8. Timing and Performance")
+                    print("9. Firewall and IDS Evasion")
+                    print("10. Outputs")
+                    print("11. Miscellaneous")
+                    print("12. Back to main menu")
+                    flagcat = input("> ")
 
-                base_cmd = build_target_cmd()
-                if target != "n": base_cmd.append(target)
-                if iL != "n": base_cmd.extend(["-iL", iL])
-                if iR != "n":
-                    if iR == "0":
-                        print("")
-                        print("Running -iR with 0 will run it infinitely until stopped with Ctrl + C")
-                        print("")
-                    base_cmd.extend(["-iR", iR])
-                if excludetarget != "n": base_cmd.extend(["--exclude", excludetarget])
-                if excludefile != "n": base_cmd.extend(["--excludefile", excludefile])
-
-                final_command = " ".join(base_cmd)
-                print("")
-                print("Final command:", final_command)
-                firstbreak = input("Would you like to run nmap now? (y/n): ")
-                match firstbreak:
-                    case "y":
-                        result = subprocess.run(base_cmd, capture_output=True, text=True, bufsize=1)
-                        output = result.stdout + result.stderr
-                        print(output)
-                        flags = base_cmd[3:]
-                        saves.add_history(target, " ".join(flags), final_command, output)
-                        print("Scan complete and saved.")
-                        print("")
-
-
-                    case "n":
-                        print("")
-                        print("--- Scan Techniques ---")
-                        print("")
-                        print("-- TCP Scan Types --")
-                        print("(Only one per scan)")
-                        print("DO NOT SELECT IF YOU WANT TO USE CUSTOM TCP FLAGS")
-                        print("Can be used with UDP scans ONLY (No SCTP)")
-                        print("")
-                        sA = input("[-sA] ACK scan, detects firewall/ACL? (y/n): ")
-                        sF = input("[-sF] TCP FIN scan, stealth scan to detect open ports without full connection? (y/n): ")
-                        sM = input("[-sM] Maimon scan, sends a TCP packet with FIN and ACK flags? (y/n): ")
-                        sN = input("[-sN] TCP Null scan, sends a TCP packet with no set flags? (y/n): ")
-                        sS = input("[-sS] Stealth scan, send SYN packets to check if ports are open? (y/n): ")
-                        sT = input("[-sT] TCP connect scan, full TCP connection scan? (y/n): ")
-                        sW = input("[-sW] Window scan, sends ACK packets that checks using window size? (y/n): ")
-                        sX = input("[-sX] Xmas scan, stealth scan with FIN, PSH and URG flags? (y/n): ")
-                        print("")
-                        print("-- UDP Scan --")
-                        print("(Can be used with TCP, Custom TCP Flags and STCP scans)")
-                        print("")
-                        sU = input("[-sU] UDP scan, sends UDP packets? (y/n): ")
-                        print("")
-                        print("-- SCTP Scan Types --")
-                        print("(Only one per scan)")
-                        print("Can be used with UDP scan ONLY (No TCP)")
-                        print("")
-                        sY = input("[-sY]SCTP INIT scan, sends INIT message to see if ports reply? (y/n): ")
-                        sZ = input("[-sZ] SCTP COOKIE-ECHO scan, send COOKIE-ECHO after INIT? (y/n): ")
-                        print("")
-                        print("-- TCP Flags --")
-                        print("(Replaces TCP Scan Types)")
-                        print("Can be used with UDP scans ONLY (No SCTP)")
-                        print("")
-                        print("ACK - Acknowledge and confirm recieved packets")
-                        print("CWR - Congestion Window Reduced, used for congestion control")
-                        print("ECE - ECN Echo, also for congestion control")
-                        print("FIN - Finish, marks the end of the data")
-                        print("NS - Nonce Sum, used for ECN experiments")
-                        print("PSH - Tells receiver to push data to the app now")
-                        print("RST - Reset the connection")
-                        print("SYN - Start a connection")
-                        print("URG - Data to be processed now")
-                        print("")
-                        scanflags = input("[--scanflags] Set custom TCP flags separated by commas (e.g: SYN,FIN) (enter n to leave empty): ")
-
-                        if sA == "y": base_cmd.append("-sA")
-                        if sF == "y": base_cmd.append("-sF")
-                        if sM == "y": base_cmd.append("-sM")
-                        if sN == "y": base_cmd.append("-sN")
-                        if sS == "y": base_cmd.append("-sS")
-                        if sT == "y": base_cmd.append("-sT")
-                        if sU == "y": base_cmd.append("-sU")
-                        if sW == "y": base_cmd.append("-sW")
-                        if sX == "y": base_cmd.append("-sX")
-                        if sY == "y": base_cmd.append("-sY")
-                        if sZ == "y": base_cmd.append("-sZ")
-                        if scanflags != "n": base_cmd.extend(["--scanflags", scanflags])
-                                
-                        final_command = " ".join(base_cmd)
-                        print("")
-                        print("Final command:", final_command)
-                        secondbreak = input("Would you like to run nmap now? (y/n): ")
-                        match secondbreak:
-                            case "y":
-                                result = subprocess.run(base_cmd, capture_output=True, text=True, bufsize=1)
-                                output = result.stdout + result.stderr
-                                print(output)
-                                flags = base_cmd[3:]
-                                saves.add_history(target, " ".join(flags), final_command, output)
-                                print("Scan complete and saved.")
-                                print("")
-
-                            case "n":
-                                print("")
-                                print("--- Host Discovery ---")
-                                print("")
-                                disarpping = input("[--disable-arp-ping] Skip ARP ping on local net? (y/n): ")
-                                PA = input("[-PA] List ports for TCP ACK ping separated by commas (e.g: 22,80) or in a range (e.g: 20-25) (enter n to leave empty): ")
-                                PE = input("[-PE] Send standard ICMP ping? (y/n): ")
-                                PM = input("[-PM] Send ICMP timestamp request? (y/n): ")
-                                Pn = input("[-Pn] Skip host discovery (This assumes the host is up)? (y/n): ")
-                                PO = input("[-PO] IP protocol ping? (y/n): ")
-                                PS = input("[-PS] List ports for TCP SYN ping separated by commas (e.g: 22,80) or in a range (e.g: 20-25) (enter n to leave empty): ")
-                                PU = input("[-PU] List ports for UDP ping separated by commas (e.g: 22,80) or in a range (e.g: 20-25) (enter n to leave empty): ")
-                                sn = input("[-sn] Ping scan (WILL NOT WORK WITH ANY SCAN TECHNIQUE FLAGS)? (y/n): ")
-
-                                if disarpping == "y": base_cmd.append("--disable-arp-ping")
-                                if PA != "n": base_cmd.append(f"-PA{PA}")
-                                if PE == "y": base_cmd.append("-PE")
-                                if PM == "y": base_cmd.append("-PM")
-                                if Pn == "y": base_cmd.append("-Pn")
-                                if PO == "y": base_cmd.append("-PO")
-                                if PS != "n": base_cmd.append(f"-PS{PS}")
-                                if PU != "n": base_cmd.append(f"-PU{PU}")
-                                if sn == "y": base_cmd.append("-sn")
-
-                                final_command = " ".join(base_cmd)
-                                print("")
-                                print("Final command:", final_command)
-                                thirdbreak = input("Would you like to run nmap now? (y/n): ")
-                                match thirdbreak:
-                                    case "y":
-                                        result = subprocess.run(base_cmd, capture_output=True, text=True, bufsize=1)
-                                        output = result.stdout + result.stderr
-                                        print(output)
-                                        flags = base_cmd[3:]
-                                        saves.add_history(target, " ".join(flags), final_command, output)
-                                        print("Scan complete and saved.")
-                                        print("")
-
-                                    case "n":
-                                        print("")
-                                        print("--- Port Specification and Scan Order ---")
-                                        print("")
-                                        F = input("[-F] Use Fast mode (This will scan top 100 most common ports and miss less common ports)? (y/n): ")
-                                        p = input("[-p] List ports to scan by commas (e.g: 22,80) or in a range (e.g: 20-25) (enter n to leave empty): ")
-                                        portratio = input("[--port-ratio] Determines the ratio of ports to be opened for the host to be considered up (0.0 - 1.0) (enter n to leave empty): ")
-                                        r = input("[-r] Scan ports in order? (y/n): ")
-                                        topports = input("[--top-ports] Scan N most common ports (enter n to leave empty): ")
-
-                                        if F == "y": base_cmd.append("-F")
-                                        if p != "n": base_cmd.extend(["-p",p])
-                                        if portratio != "n": base_cmd.extend(["--port-ratio", portratio])
-                                        if r == "y": base_cmd.append("-r")
-                                        if topports != "n": base_cmd.extend(["--top-ports", topports])
-
-                                        final_command = " ".join(base_cmd)
-                                        print("")
-                                        print("Final command:", final_command)
-                                        fourthbreak = input("Would you like to run nmap now? (y/n): ")
-                                        match fourthbreak:
-                                            case "y":
-                                                result = subprocess.run(base_cmd, capture_output=True, text=True, bufsize=1)
-                                                output = result.stdout + result.stderr
-                                                print(output)
-                                                flags = base_cmd[3:]
-                                                saves.add_history(target, " ".join(flags), final_command, output)
-                                                print("Scan complete and saved.")
-                                                print("")
-
-                                            case "n":
-                                                print("")
-                                                print("--- Service and Version Detection ---")
-                                                print("")
-                                                sV = input("[-sV] Detect service versions? (y/n): ")
-                                                print("")
-                                                print("-- If Service Version Detection Is On --")
-                                                print("")
-                                                verall = input("[--version-all] Check all probes for services? (y/n): ")
-                                                verint = input("[--version-intensity] Select a version scan intensity (0-9) (enter n to leave empty): ")
-                                                verlight = input("[--version-light] Lighter service detection? (y/n): ")
-
-                                                if sV == "y": base_cmd.append("-sV")
-                                                if verall == "y": base_cmd.append("--version-all")
-                                                if verint != "n": base_cmd.extend(["--version-intensity",verint])
-                                                if verlight == "y": base_cmd.append("--version-light")
-
-                                                final_command = " ".join(base_cmd)
-                                                print("")
-                                                print("Final command:", final_command)
-                                                fifthbreak = input("Would you like to run nmap now? (y/n): ")
-                                                match fifthbreak:
-                                                    case "y":
-                                                        result = subprocess.run(base_cmd, capture_output=True, text=True, bufsize=1)
-                                                        output = result.stdout + result.stderr
-                                                        print(output)
-                                                        flags = base_cmd[3:]
-                                                        saves.add_history(target, " ".join(flags), final_command, output)
-                                                        print("Scan complete and saved.")
-                                                        print("")
-
-                                                    case "n":
-                                                        print("")
-                                                        print("--- OS Detection ---")
-                                                        print("")
-                                                        O = input("[-O] Detect target OS? (y/n): ")
-                                                        print("")
-                                                        print("-- If OS Detection Is On --")
-                                                        print("")
-                                                        osguess = input("[--osscan-guess] Guess a host's OS when exact match is not found? (y/n): ")
-                                                        oslimit = input("[--osscan-limit] Limit OS detection to promising targets? (y/n): ")
-
-                                                        if O == "y": base_cmd.append("-O")
-                                                        if osguess == "y": base_cmd.append("--osscan-guess")
-                                                        if oslimit == "y": base_cmd.append("--osscan-limit")
-
-                                                        final_command = " ".join(base_cmd)
-                                                        print("")
-                                                        print("Final command:", final_command)
-                                                        sixthbreak = input("Would you like to run nmap now? (y/n): ")
-                                                        match sixthbreak:
-                                                            case "y":
-                                                                result = subprocess.run(base_cmd, capture_output=True, text=True, bufsize=1)
-                                                                output = result.stdout + result.stderr
-                                                                print(output)
-                                                                flags = base_cmd[3:]
-                                                                saves.add_history(target, " ".join(flags), final_command, output)
-                                                                print("Scan complete and saved.")
-                                                                print("")
-
-                                                            case "n":
-                                                                print("")
-                                                                print("--- Script Scanning (NSE) ---")
-                                                                print("")
-                                                                sC = input("[-sC] Run Nmap's default script set? (y/n): ")
-                                                                print("")
-                                                                print("-- Script Categories --")
-                                                                print("")
-                                                                print("all - Every script installed in your system (varies user to user if you installed custom scripts)")
-                                                                print("auth - Authentication (checks for logins, credentials, bypasses etc)")
-                                                                print("broadcast - Discovering hosts on the current network")
-                                                                print("brute - Brute force attacks")
-                                                                print("default - Jack of all trades script")
-                                                                print("discovery - Find services, hosts and details")
-                                                                print("dos - Denial of service checks")
-                                                                print("exploit - Extremely intrusive active exploitation")
-                                                                print("external - Queries for outside services/APIs")
-                                                                print("fuzzer - Protocol fuzzing")
-                                                                print("intrusive - Aggressive, noisy and disruptive scripts")
-                                                                print("malware - Checks for any known malware or backdoors")
-                                                                print("safe - Safe scripts that you could run in production")
-                                                                print("version - Extended version detection")
-                                                                print("vuln - Vulnerability checks such as CVEs and misconfigs")
-                                                                print("")
-                                                                choosescript = input("[--script] Choose the scripts you would like to run (e.g: default,safe) (enter n to leave empty): ")
-                                                                scriptargs = input("[--script-args] Enter arguements for chosen NSE scripts (enter n to leave empty): ")
-                                                                scriptargsfile =  input("[--script-args-file] Load arguements for chosen NSE scripts from given file path (enter n to leave empty): ")
-                                                                scripttrace = input("[--script-trace] Trace traffic for chosen NSE scripts and arguements? (y/n): ")
-
-                                                                if sC == "y": base_cmd.append("-sC")
-                                                                if choosescript != "n": base_cmd.append(f"--script={choosescript}")
-                                                                if scriptargs != "n": base_cmd.append(f"--script-args={scriptargs}")
-                                                                if scriptargsfile != "n": base_cmd.append(f"--script-args-file={scriptargsfile}")
-                                                                if scripttrace == "y": base_cmd.append("--script-trace")
-
-                                                                final_command = " ".join(base_cmd)
-                                                                print("")
-                                                                print("Final command:", final_command)
-                                                                seventhbreak = input("Would you like to run nmap now? (y/n): ")
-                                                                match seventhbreak:
-                                                                    case "y":
-                                                                        result = subprocess.run(base_cmd, capture_output=True, text=True, bufsize=1)
-                                                                        output = result.stdout + result.stderr
-                                                                        print(output)
-                                                                        flags = base_cmd[3:]
-                                                                        saves.add_history(target, " ".join(flags), final_command, output)
-                                                                        print("Scan complete and saved.")
-                                                                        print("")
-
-                                                                    case "n":
-                                                                        print("")
-                                                                        print("--- Timing and Performance ---")
-                                                                        print("")
-                                                                        T = input("[-T] Enter a value of 0-5 to determine the speed of the scan, 0 for slowest 5 for fastest (enter n to leave empty): ")
-                                                                        print("")
-                                                                        print("-- Retry and timeout --")
-                                                                        print("")
-                                                                        maxretries = input("[--max-retries] Enter the maximum number of probe retransmissions (enter n to leave empty): ")
-                                                                        minrtttimeout = input("[--min-rtt-timeout] Enter the minimum time for round-trip-time estimate (e.g: 5ms for 5 milliseconds, 1s for 1 second, 3m for 3 minutes, or 4h for 4 hours) (enter n to leave empty): ")
-                                                                        maxrtttimeout = input("[--max-rtt-timeout] Enter the maximum time for round-trip-time estimate (e.g: 5ms for 5 milliseconds, 1s for 1 second, 3m for 3 minutes, or 4h for 4 hours) (enter n to leave empty): ")
-                                                                        inirtttimeout = input("[--initial-rtt-timeout] Enter the starting time for round-trip-time estimate (e.g: 5ms for 5 milliseconds, 1s for 1 second, 3m for 3 minutes, or 4h for 4 hours) (enter n to leave empty): ")
-                                                                        print("")
-                                                                        print("-- Parallelism --")
-                                                                        print("")
-                                                                        minpar = input("[--min-parallelism] Enter minimum number of probes to run in parallel (enter n to leave empty): ")
-                                                                        maxpar = input("[--max-parallelism] Enter maximum number of probes to run in parallel (enter n to leave empty): ")
-                                                                        minhostgroup = input("[--min-hostgroup] Enter minimum amount of hosts to scan in parallel (enter n to leave empty): ")
-                                                                        maxhostgroup = input("[--max-hostgroup] Enter maximum amount of hosts to scan in parallel (enter n to leave empty): ")
-                                                                        print("")
-                                                                        print("-- Rate control --")
-                                                                        print("")
-                                                                        minrate = input("[--min-rate] Send a set minimum amount of packets per second (enter n to leave empty): ")
-                                                                        maxrate = input("[--max-rate] Send a set maximum amount of packets per second (enter n to leave empty): ")
-                                                                        print("")
-                                                                        print("-- Scan delays --")
-                                                                        print("")
-                                                                        scandelay = input("[--scan-delay] Enter amount of time to wait between probes to the host (e.g: 5ms for 5 milliseconds, 1s for 1 second, 3m for 3 minutes, or 4h for 4 hours) (enter n to leave empty): ")
-                                                                        maxscandelay = input("[--max-scan-delay] Enter max amount of time to wait between probes to the host (e.g: 5ms for 5 milliseconds, 1s for 1 second, 3m for 3 minutes, or 4h for 4 hours) (enter n to leave empty): ")
-                                                                        print("")
-                                                                        print("-- Firewall and RST handling --")
-                                                                        print("")
-                                                                        defrstratelmt = input("[--defeat-rst-ratelimit] Bypass firewalls that rate-limit RST packets? (y/n): ")
-                                                                        print("")
-                                                                        print("-- Nsock Engines --")
-                                                                        print("")
-                                                                        print("epoll - Very efficient for large scans (Linux only)")
-                                                                        print("iocp - Uses IO Completion Ports (Windows only)")
-                                                                        print("kqueue - Event notification system for BSD and macOS")
-                                                                        print("poll - More quicker version of 'select' (Unix systems only)")
-                                                                        print("select - Basic, portable method (Works everywhere, but slow)")
-                                                                        print("")
-                                                                        nsock = input("[--nsock-engine] Choose Nsock engine (enter n to leave empty): ")
-                                                                        
-                                                                        if T != "n": base_cmd.extend(["-T",T])
-                                                                        if maxretries != "n": base_cmd.extend(["--max-retries", maxretries])
-                                                                        if minrtttimeout != "n": base_cmd.extend(["--min-rtt-timeout", minrtttimeout])
-                                                                        if maxrtttimeout != "n": base_cmd.extend(["--max-rtt-timeout", maxrtttimeout])
-                                                                        if inirtttimeout != "n": base_cmd.extend(["--initial-rtt-timeout", inirtttimeout])
-                                                                        if minpar != "n": base_cmd.extend(["--min-parallelism", minpar])
-                                                                        if maxpar != "n": base_cmd.extend(["--max-parallelism", maxpar])
-                                                                        if minhostgroup != "n": base_cmd.extend(["--min-hostgroup", minhostgroup])
-                                                                        if maxhostgroup != "n": base_cmd.extend(["--max-hostgroup", maxhostgroup])
-                                                                        if minrate != "n": base_cmd.extend(["--min-rate", minrate])
-                                                                        if maxrate != "n": base_cmd.extend(["--max-rate", maxrate])
-                                                                        if scandelay != "n": base_cmd.extend(["--scan-delay", scandelay])
-                                                                        if maxscandelay != "n": base_cmd.extend(["--max-scan-delay", maxscandelay])
-                                                                        if defrstratelmt == "y": base_cmd.append("--defeat-rst-ratelimit")
-                                                                        if nsock != "n": base_cmd.extend(["--nsock-engine", nsock])
-
-                                                                        final_command = " ".join(base_cmd)
-                                                                        print("")
-                                                                        print("Final command:", final_command)
-                                                                        eigthbreak = input("Would you like to run nmap now? (y/n): ")
-                                                                        match eigthbreak:
-                                                                            case "y":
-                                                                                result = subprocess.run(base_cmd, capture_output=True, text=True, bufsize=1)
-                                                                                output = result.stdout + result.stderr
-                                                                                print(output)
-                                                                                flags = base_cmd[3:]
-                                                                                saves.add_history(target, " ".join(flags), final_command, output)
-                                                                                print("Scan complete and saved.")
-                                                                                print("")
-
-                                                                            case "n":
-                                                                                print("")
-                                                                                print("--- Firewall and IDS Evasion ---")
-                                                                                print("")
-                                                                                print("-- Packet fragmentation --")
-                                                                                print("")
-                                                                                f = input("[-f] Fragment probe packets? (y/n): ")
-                                                                                mtu = input("[--mtu] Set custom fragment value in multiples of 8 (enter n to leave empty): ")
-                                                                                print("")
-                                                                                print("-- IP masking --")
-                                                                                print("")
-                                                                                D = input("[-D] Enter fake IPs as decoys to mask your real IP, use ME to mark your actual IP (e.g: 192.168.0.5,10.25.0.13,ME,206.0.115.13) (enter n to leave empty): ")
-                                                                                S = input("[-S] Input IP address to spoof source address (enter n to leave empty): ")
-                                                                                spoofmac = input("[--spoof-mac] Enter a full MAC, prefix or vendor name to fake your network card's MAC address (enter n to leave empty): ")
-                                                                                print("")
-                                                                                print("-- Connection routing --")
-                                                                                print("")
-                                                                                e = input("[-e] Enter a specified network interface to scan (e.g: wlan0, eth1) (enter n to leave empty): ")
-                                                                                g = input("[-g] Set a source port to send packets from (e.g: 80) (enter n to leave empty): ")
-                                                                                proxies = input("[--proxies] Specify proxies to send your connection through (e.g: http://proxy1:8080,socks4://proxy2:1080) (enter n to leave empty): ")
-                                                                                ttl = input("[--ttl] Set how many hops a packet can take (enter n to leave empty): ")
-                                                                                print("")
-                                                                                print("-- Payloads and padding --")
-                                                                                print("")
-                                                                                datahex = input("[--data] Enter hex string as custom payload (enter n to leave empty): ")
-                                                                                datastring = input("[--data-string] Enter ASCII string  as custom payload (enter n to leave empty): ")
-                                                                                datalength = input("[--data-length] Enter a number of random bytes to pad the packet (enter n to leave empty): ")
-                                                                                badsum = input("[--badsum] Send bad checksums? (y/n): ")
-                                                                                print("")
-                                                                                print("-- IP Options --")
-                                                                                print("")
-                                                                                print("Hex bytes - Directly supply hex bytes (e.g: 0101080A)")
-                                                                                print("L - Specify a list of IPs your packet will follow, but it can choose paths between the given IP (e.g: 192.168.1.1 10.0.0.1)")
-                                                                                print("R - Let's you see the actual path your packet takes")
-                                                                                print("S - Specify a list of IPs your packet will follow (e.g: 192.168.1.1 10.0.0.1)")
-                                                                                print("T - Records when a hop forwards the packet")
-                                                                                print("U - Tells routers to take a closer look at the packet")
-                                                                                print("")
-                                                                                ipoptions = input("[--ip-options] Set IP options separated by spaces (e.g: 0101080A R) (enter n to leave empty): ")
-
-                                                                                if f == "y": base_cmd.append("-f")
-                                                                                if mtu != "n": base_cmd.extend(["--mtu", mtu])
-                                                                                if D != "n": base_cmd.extend(["-D", D])
-                                                                                if S != "n": base_cmd.extend(["-S", S])
-                                                                                if spoofmac != "n": base_cmd.extend(["--spoof-mac", spoofmac])
-                                                                                if e != "n": base_cmd.extend(["-e", e])
-                                                                                if g != "n": base_cmd.extend(["-g", g])
-                                                                                if proxies != "n": base_cmd.extend(["--proxies", proxies])
-                                                                                if ttl != "n": base_cmd.extend(["--ttl", ttl])
-                                                                                if datahex != "n": base_cmd.extend(["--data", datahex])
-                                                                                if datastring != "n": base_cmd.extend(["--data-string", datastring])
-                                                                                if datalength != "n": base_cmd.extend(["--data-length", datalength])
-                                                                                if badsum == "y": base_cmd.append("--badsum")
-                                                                                if ipoptions != "n": base_cmd.extend(["--ip-options", ipoptions])
-
-                                                                                final_command = " ".join(base_cmd)
-                                                                                print("")
-                                                                                print("Final command:", final_command)
-                                                                                ninthbreak = input("Would you like to run nmap now? (y/n): ")
-                                                                                match ninthbreak:
-                                                                                    case "y":
-                                                                                        result = subprocess.run(base_cmd, capture_output=True, text=True, bufsize=1)
-                                                                                        output = result.stdout + result.stderr
-                                                                                        print(output)
-                                                                                        flags = base_cmd[3:]
-                                                                                        saves.add_history(target, " ".join(flags), final_command, output)
-                                                                                        print("Scan complete and saved.")
-                                                                                        print("")
-
-                                                                                    case "n":
-                                                                                        print("")
-                                                                                        print("--- Outputs ---")
-                                                                                        print("")
-                                                                                        print("-- Saving results --")
-                                                                                        print("")
-                                                                                        oN = input("[-oN] Save results in given file path in standard format (e.g: /home/user/nmapdata/data.txt) (enter n to leave empty): ")
-                                                                                        oX = input("[-oX] Save results in given file path in xml format (e.g: /home/user/nmapdata/dataxml.txt) (enter n to leave empty): ")
-                                                                                        oG = input("[-oG] Save results in given file path in grepable format for ease with grep (e.g: /home/user/nmapdata/datagrep.txt) (enter n to leave empty): ")
-                                                                                        oA = input("[-oA] Save results in given file path in all three format (e.g: /home/user/nmapdata/dataall.txt) (enter n to leave empty): ")
-                                                                                        print("")
-                                                                                        print("-- Details --")
-                                                                                        print('')
-                                                                                        v = input("[-v] Add more details? (enter n for empty, 1 for standard, 2 for extra and 3 for most): ")
-                                                                                        d = input("[-d] Enter value to get debugging info (0-9) (enter n to leave empty): ")
-                                                                                        reason = input("[--reason] Get reason for why a port is marked open or closed? (y/n): ")
-                                                                                        openports = input("[--open] Only list open ports? (y/n): ")
-                                                                                        packettrace = input("[--packet-trace] Trace all sent and recieved packets? (y/n): ")
-                                                                                        iflist = input("[--iflist] Show system interfaces and routes? (y/n): ")
-                                                                                        print("")
-                                                                                        print("-- XML-only options --")
-                                                                                        print("")
-                                                                                        defaultstyle = input("[--webxml] Use Nmap's default XML style? (y/n): ")
-                                                                                        customstyle = input("[--stylesheet] Enter file path to add custom stylesheet for XML output (enter n to leave empty): ")
-                                                                                        nostyle = input("[--no-stylesheet] Display raw XML? (y/n): ")
-                                                                                        print("")
-                                                                                        print("-- Others --")
-                                                                                        print("")
-                                                                                        appendoutput = input("[--append-output] Add new scan results to given file path (relates to the file path provided for saving results)? (y/n): ")
-                                                                                        resume = input("[--resume] Enter file path to continue scan from (enter n to leave empty): ")
-                                                                                        nonint = input("[--noninteractive] Run scan without inputs from user? (y/n): ")
-
-                                                                                        if oA != "n": base_cmd.extend(["-oA", oA])
-                                                                                        if oG != "n": base_cmd.extend(["-oG", oG])
-                                                                                        if oN != "n": base_cmd.extend(["-oN", oN])
-                                                                                        if oX != "n": base_cmd.extend(["-oX", oX])
-                                                                                        if v != "n": 
-                                                                                            if v == '1': base_cmd.append("-v")
-                                                                                            elif v == '2': base_cmd.append("-vv")
-                                                                                            elif v == '3': base_cmd.append("-vvv")
-                                                                                        if d != "n":
-                                                                                            try:
-                                                                                                level = int(d)
-                                                                                                if level < 0: level = 0
-                                                                                                if level > 9: level = 9
-                                                                                                base_cmd.append("-" + "d" * level)
-                                                                                            except ValueError:
-                                                                                                base_cmd.append("-d")
-
-                                                                                        if reason == "y": base_cmd.append("--reason")
-                                                                                        if openports == "y": base_cmd.append("--open")
-                                                                                        if packettrace == "y": base_cmd.append("--packet-trace")
-                                                                                        if iflist == "y": base_cmd.append("--iflist")
-                                                                                        if defaultstyle == "y": base_cmd.append("--webxml")
-                                                                                        if customstyle != "n": base_cmd.extend(["--stylesheet", customstyle])
-                                                                                        if nostyle == "y": base_cmd.append("--no-stylesheet")
-                                                                                        if appendoutput == "y": base_cmd.append("--append-output")
-                                                                                        if resume != "n": base_cmd.extend(["--resume", resume])
-                                                                                        if nonint == "y": base_cmd.append("--noninteractive")
-
-                                                                                        final_command = " ".join(base_cmd)
-                                                                                        print("")
-                                                                                        print("Final command:", final_command)
-                                                                                        tenthbreak = input("Would you like to run nmap now? (y/n): ")
-                                                                                        match tenthbreak:
-                                                                                            case "y":
-                                                                                                result = subprocess.run(base_cmd, capture_output=True, text=True, bufsize=1)
-                                                                                                output = result.stdout + result.stderr
-                                                                                                print(output)
-                                                                                                flags = base_cmd[3:]
-                                                                                                saves.add_history(target, " ".join(flags), final_command, output)
-                                                                                                print("Scan complete and saved.")
-                                                                                                print("")
-
-                                                                                            case "n":
-                                                                                                print("")
-                                                                                                print("--- Miscellaneous ---")
-                                                                                                print("")
-                                                                                                ipv6 = input("[-6] Use IPv6 instead of IPv4? (y/n): ")
-                                                                                                A = input("[-A] Turn on OS detection, Service version detection, default script scanning and aggresive scanning? (y/n): ")
-                                                                                                datadir = input("[--datadir] Have Nmap use data files from given file path instead of system defaults (e.g: /home/user/custom-nmap-data) (enter n to leave empty): ")
-                                                                                                sendeth = input("[--send-eth] Send packets over Ethernet? (y/n): ")
-                                                                                                sendip = input("[--send-ip] Send packets as raw IP packets (not usable with sending over Ethernet)? (y/n): ")
-                                                                                                priv = input("[--privileged] Get Nmap to assume you're root? (y/n): ")
-                                                                                                unpriv = input("[--unprivileged] Get Nmap to assume you're a normal user (not usable with getting Nmap to assume you're root)? (y/n): ")
-                                                                                                
-                                                                                                if ipv6 == "y": base_cmd.append("-6")
-                                                                                                if A == "y": base_cmd.append("-A")
-                                                                                                if datadir != "n": base_cmd.extend(["--datadir", datadir])
-                                                                                                if sendeth == "y": base_cmd.append("--send-eth")
-                                                                                                if sendip == "y": base_cmd.append("--send-ip")
-                                                                                                if priv == "y": base_cmd.append("--privileged")
-                                                                                                if unpriv == "y": base_cmd.append("--unprivileged")
-
-                                                                                                final_command = " ".join(base_cmd)
-                                                                                                print("")
-                                                                                                print("Final command:", final_command)
-                                                                                                input("Press enter to run the command")
-                                                                                                result = subprocess.run(base_cmd, capture_output=True, text=True, bufsize=1)
-                                                                                                output = result.stdout + result.stderr
-                                                                                                print(output)
-                                                                                                flags = base_cmd[3:]
-                                                                                                saves.add_history(target, " ".join(flags), final_command, output)
-                                                                                                print("Scan complete and saved.")
-                                                                                                print("")
-
-            case "2":
-                saves.menu()
-            case "3":
-                print("Thank you, please come again")
-                print("Any ideas for future updates are welcome, hmu on Github :D")
-                print("")
-                exit()
-            case _:
-                print("Please select a valid option.")
-                print("")
+                    match flagcat:
+                        case "1":
+                            targetspec.menu(ctx)
+                        case "2":
+                            scantech.menu(ctx)
+                        case "3":
+                            hostdiscovery.menu(ctx)
+                        case "4":
+                            portspecandscanorder.menu(ctx)
+                        case "5":
+                            serviceverdetect.menu(ctx)
+                        case "6":
+                            osdetec.menu(ctx)
+                        case "7":
+                            nse.menu(ctx)
+                        case "8":
+                            timingandperf.menu(ctx)
+                        case "9":
+                            firewallandidsevas.menu(ctx)
+                        case "10":
+                            outputs.menu(ctx)
+                        case "11":
+                            others.menu(ctx)
+                        case "12":
+                            raise backtomain
+                        case _:
+                            print("Please select a valid option.")
+                            print("")
+                case "2":
+                    ctx = ScanContext()
+                    print("Current command cleared")
+                    print("")
+                case "3":
+                    custom.menu()
+                case "4":
+                    saves.menu()
+                case "5":
+                    print("Thank you, please come again")
+                    print("Any ideas for future updates are welcome, hmu on Github :D")
+                    print("")
+                    exit()
+                case _:
+                    print("Please select a valid option.")
+                    print("")
+        except exceptions.backtomain:
+            continue
 
 if __name__ == "__main__":
     main()

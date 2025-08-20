@@ -1,6 +1,7 @@
 import json
 import os
 from datetime import datetime
+from modules.exceptions import backtomain
 
 HISTORY_FILE = "scan_history.json"
 
@@ -83,7 +84,7 @@ def menu():
                     print("History cleared.")
                     print("")
             case"4":
-                break
+                raise backtomain
             case _:
                 print("Please select a valid option.")
                 print("")
