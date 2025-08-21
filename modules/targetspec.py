@@ -11,10 +11,10 @@ def menu(ctx: ScanContext):
         print("")
 
         target = input("Enter target IP/domain (enter n to leave empty): ")
-        iL = input("Enter targets to scan from a given file path (enter n to leave empty): ")
-        iR = input("Enter the amount of random hosts you want to target (enter 0 for endless targets and n to leave empty): ")
-        excludetarget = input("Enter targets to exclude from search separated by commas (e.g: 192.168.0.1,192.168.0.2)(enter n to leave empty): ")
-        excludefile = input("Enter targets to exclude from a given file path (enter n to leave empty): ")
+        iL = input("[-iL] Enter targets to scan from a given file path (enter n to leave empty): ")
+        iR = input("[-iR] Enter the amount of random hosts you want to target (enter 0 for endless targets and n to leave empty): ")
+        excludetarget = input("[--exclude] Enter targets to exclude from search separated by commas (e.g: 192.168.0.1,192.168.0.2)(enter n to leave empty): ")
+        excludefile = input("[--excludefile] Enter targets to exclude from a given file path (enter n to leave empty): ")
 
         if target != "n": 
             ctx.set_target(target)
@@ -30,7 +30,7 @@ def menu(ctx: ScanContext):
         if excludefile != "n": 
             ctx.add_flag("--excludefile", excludefile)
 
-        os.system("printf '\033c'")
+        os.system("printf '\033[2J\033[3J\033[H'")
         print("Current command:", ctx.get_command())
         print("")
         while True:
@@ -62,40 +62,40 @@ def menu(ctx: ScanContext):
 
                         match flagcat:
                             case "1":
-                                os.system("printf '\033c'")
+                                os.system("printf '\033[2J\033[3J\033[H'")
                                 scantech.menu(ctx)
                             case "2":
-                                os.system("printf '\033c'")
+                                os.system("printf '\033[2J\033[3J\033[H'")
                                 hostdiscovery.menu(ctx)
                             case "3":
-                                os.system("printf '\033c'")
+                                os.system("printf '\033[2J\033[3J\033[H'")
                                 portspecandscanorder.menu(ctx)
                             case "4":
-                                os.system("printf '\033c'")
+                                os.system("printf '\033[2J\033[3J\033[H'")
                                 serviceverdetect.menu(ctx)
                             case "5":
-                                os.system("printf '\033c'")
+                                os.system("printf '\033[2J\033[3J\033[H'")
                                 osdetec.menu(ctx)
                             case "6":
-                                os.system("printf '\033c'")
+                                os.system("printf '\033[2J\033[3J\033[H'")
                                 nse.menu(ctx)
                             case "7":
-                                os.system("printf '\033c'")
+                                os.system("printf '\033[2J\033[3J\033[H'")
                                 timingandperf.menu(ctx)
                             case "8":
-                                os.system("printf '\033c'")
+                                os.system("printf '\033[2J\033[3J\033[H'")
                                 firewallandidsevas.menu(ctx)
                             case "9":
-                                os.system("printf '\033c'")
+                                os.system("printf '\033[2J\033[3J\033[H'")
                                 outputs.menu(ctx)
                             case "10":
-                                os.system("printf '\033c'")
+                                os.system("printf '\033[2J\033[3J\033[H'")
                                 others.menu(ctx)
                             case _:
                                 print("Please select a valid option.")
                                 print("")
                 case "3":
-                    os.system("printf '\033c'")
+                    os.system("printf '\033[2J\033[3J\033[H'")
                     raise backtomain
                 case _:
                     print("Please select a valid option.")

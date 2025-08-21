@@ -9,8 +9,8 @@ class ScanContext:
         self.target = ""
 
     def add_flag(self, flag, value=None):
-        if value:
-            self.flags.append(f"{flag} {value}")
+        if value is not None:
+            self.flags.extend([flag, str(value)])
         else:
             self.flags.append(flag)
 
@@ -36,7 +36,7 @@ class ScanContext:
             self.flags = []
             self.target = None
             print("Going back to main menu")
-            os.system("printf '\033c'")
+            os.system("printf '\033[2J\033[3J\033[H'")
         else:
             print("Running:", " ".join(final_command))
             print("")
@@ -54,4 +54,4 @@ class ScanContext:
             self.flags = []
             self.target = None
             print("Going back to main menu")
-            os.system("printf '\033c'")
+            os.system("printf '\033[2J\033[3J\033[H'")

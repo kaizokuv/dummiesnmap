@@ -35,7 +35,7 @@ def menu():
             output = f"Error: {e}"
         saves.add_history(target, " ".join(flags), " ".join(full_cmd_list), output)
         print("Scan complete and saved")
-        os.system("printf '\033c'")
+        os.system("printf '\033[2J\033[3J\033[H'")
         tryagainmenu()
 
 def tryagainmenu():
@@ -50,13 +50,13 @@ def tryagainmenu():
 
         match customcase:
             case "1":
-                os.system("printf '\033c'")
+                os.system("printf '\033[2J\033[3J\033[H'")
                 menu()
             case "2":
-                os.system("printf '\033c'")
+                os.system("printf '\033[2J\033[3J\033[H'")
                 saves.menu()
             case "3":
-                os.system("printf '\033c'")
+                os.system("printf '\033[2J\033[3J\033[H'")
                 raise backtomain
             case "4":
                 print("Thank you, please come again")

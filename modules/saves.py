@@ -20,7 +20,7 @@ def add_history(target, flags, final_command, output):
     entry = {
         "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "target": target,
-        "flags": flags,
+        "flags": flags if isinstance(flags, list) else flags.split(),
         "command": final_command,
         "output": output
     }
@@ -33,7 +33,7 @@ def show_history():
         print("No scan history yet.")
         print("")
         return
-    os.system("printf '\033c'")
+    os.system("printf '\033[2J\033[3J\033[H'")
     print("--- Scan History ---")
     for i, entry in enumerate(history, 1):
         print(f"{i}.")
@@ -57,14 +57,14 @@ def menu():
             case "1":
                 show_history()
                 input("Press enter to continue")    
-                os.system("printf '\033c'")
+                os.system("printf '\033[2J\033[3J\033[H'")
             case "2":
                 history = load_history()
                 if not history:
                     print("No history to view.")
                     print("")
                     input("Press enter to continue")    
-                    os.system("printf '\033c'")
+                    os.system("printf '\033[2J\033[3J\033[H'")
                 else:
                     while True:
                         show_history()
@@ -82,23 +82,23 @@ def menu():
                             print(entry['output'])
                             print("")
                             input("Press enter to continue")    
-                            os.system("printf '\033c'")
+                            os.system("printf '\033[2J\033[3J\033[H'")
                             menu()
                         else:
                             print("Please select a valid option.")
                             print("")
                             input("Press enter to continue")
-                            os.system("printf '\033c'")
+                            os.system("printf '\033[2J\033[3J\033[H'")
             case "3":
                 history = load_history()
                 if not history:
                     print("No history to view.")
                     print("")
                     input("Press enter to continue")    
-                    os.system("printf '\033c'")
+                    os.system("printf '\033[2J\033[3J\033[H'")
                 else:
                     while True:
-                        os.system("printf '\033c'")
+                        os.system("printf '\033[2J\033[3J\033[H'")
                         show_history()
                         idx = input("Enter scan number to view and use details: ")
                         if idx.isdigit() and 1 <= int(idx) <= len(history):
@@ -120,22 +120,32 @@ def menu():
                                         print("Invalid target")
                                         print("")
                                         input("Press enter to continue")
-                                        os.system("printf '\033c'")
+                                        os.system("printf '\033[2J\033[3J\033[H'")
                                     from modules.ctx import ScanContext
                                     ctx = ScanContext()
-                                    for flag in entry["flags"].split():
+                                    i = 0
+                                    while i < len(entry["flags"]):
+                                        flag = entry["flags"][i]
                                         if flag.startswith("-"):
-                                            ctx.add_flag(flag)
+                                            value = (
+                                                entry["flags"][i+1]
+                                                if i+1 < len(entry["flags"]) and not entry["flags"][i+1].startswith("-")
+                                                else None
+                                            )
+                                            ctx.add_flag(flag, value)
+                                            if value:
+                                                i += 1
+                                        i += 1
                                     ctx.set_target(newtarget)
                                     ctx.run_and_save()
                                 else:
-                                    os.system("printf '\033c'")  
+                                    os.system("printf '\033[2J\033[3J\033[H'")  
                                     menu() 
                         else:
                             print("Please select a valid option.")
                             print("")
                             input("Press enter to continue")
-                            os.system("printf '\033c'")
+                            os.system("printf '\033[2J\033[3J\033[H'")
             case "4":
                 confirm = input("Are you sure you want to clear all history? (y/n): ")
                 print("")
@@ -144,9 +154,9 @@ def menu():
                     print("History cleared.")
                     print("")
                 input("Press enter to continue")    
-                os.system("printf '\033c'")
+                os.system("printf '\033[2J\033[3J\033[H'")
             case"5":
-                os.system("printf '\033c'")
+                os.system("printf '\033[2J\033[3J\033[H'")
                 raise backtomain
             case _:
                 print("Please select a valid option.")

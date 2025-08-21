@@ -25,7 +25,7 @@ def menu(ctx: ScanContext):
         if priv == "y": ctx.add_flag("--privileged")
         if unpriv == "y": ctx.add_flag("--unprivileged")
 
-        os.system("printf '\033c'")
+        os.system("printf '\033[2J\033[3J\033[H'")
         print("Current command:", ctx.get_command())
         print("")
         while True:
@@ -57,40 +57,40 @@ def menu(ctx: ScanContext):
 
                         match flagcat:
                             case "1":
-                                os.system("printf '\033c'")
+                                os.system("printf '\033[2J\033[3J\033[H'")
                                 targetspec.menu(ctx)
                             case "2":
-                                os.system("printf '\033c'")
+                                os.system("printf '\033[2J\033[3J\033[H'")
                                 scantech.menu(ctx)
                             case "3":
-                                os.system("printf '\033c'")
+                                os.system("printf '\033[2J\033[3J\033[H'")
                                 hostdiscovery.menu(ctx)
                             case "4":
-                                os.system("printf '\033c'")
+                                os.system("printf '\033[2J\033[3J\033[H'")
                                 portspecandscanorder.menu(ctx)
                             case "5":
-                                os.system("printf '\033c'")
+                                os.system("printf '\033[2J\033[3J\033[H'")
                                 serviceverdetect.menu(ctx)
                             case "6":
-                                os.system("printf '\033c'")
+                                os.system("printf '\033[2J\033[3J\033[H'")
                                 osdetec.menu(ctx)
                             case "7":
-                                os.system("printf '\033c'")
+                                os.system("printf '\033[2J\033[3J\033[H'")
                                 nse.menu(ctx)
                             case "8":
-                                os.system("printf '\033c'")
+                                os.system("printf '\033[2J\033[3J\033[H'")
                                 timingandperf.menu(ctx)
                             case "9":
-                                os.system("printf '\033c'")
+                                os.system("printf '\033[2J\033[3J\033[H'")
                                 firewallandidsevas.menu(ctx)
                             case "10":
-                                os.system("printf '\033c'")
+                                os.system("printf '\033[2J\033[3J\033[H'")
                                 outputs.menu(ctx)
                             case _:
                                 print("Please select a valid option.")
                                 print("")
                 case "3":
-                    os.system("printf '\033c'")
+                    os.system("printf '\033[2J\033[3J\033[H'")
                     raise backtomain
                 case _:
                     print("Please select a valid option.")
