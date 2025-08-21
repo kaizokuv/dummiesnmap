@@ -1,3 +1,4 @@
+import os
 import subprocess
 from modules import saves
 
@@ -28,24 +29,29 @@ class ScanContext:
 
     def run_and_save(self):
         final_command = self.get_command_list()
-        print("Running:", " ".join(final_command), "\n")
-        try:
-            result = subprocess.run(final_command, capture_output=True, text=True, bufsize=1)
-            output = result.stdout + result.stderr
-            print(output)
-            saves.add_history(self.target, " ".join(self.flags), " ".join(final_command), output)
-            print("Scan complete and saved")
-            print("Going back to main menu")
-        except Exception as e:
-            print(f"[!] Error running Nmap: {e}")
+        if final_command == ["sudo", "nmap"]:
+            print("Please provide a target/flag before running")
             print("")
-
-    def save_only(self):
-        final_command = self.get_command_list()
-        print("Saving command for:", " ".join(final_command))
-        print("")
-        saves.add_history(self.target, " ".join(self.flags), " ".join(final_command), output=None)
-        print("Command saved")
-        print("Going back to main menu")
-
-
+            input("Press enter to continue")
+            self.flags = []
+            self.target = None
+            print("Going back to main menu")
+            os.system("printf '\033c'")
+        else:
+            print("Running:", " ".join(final_command))
+            print("")
+            try:
+                result = subprocess.run(final_command, capture_output=True, text=True, bufsize=1)
+                output = result.stdout + result.stderr
+                print(output)
+                saves.add_history(self.target, " ".join(self.flags), " ".join(final_command), output)
+                print("Scan complete and saved")
+            except Exception as e:
+                print(f"Error running command: {e}")
+                output = f"Error: {e}"
+                print("")
+            input("Press enter to continue")
+            self.flags = []
+            self.target = None
+            print("Going back to main menu")
+            os.system("printf '\033c'")
