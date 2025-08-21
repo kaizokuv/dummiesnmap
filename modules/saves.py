@@ -71,7 +71,7 @@ def menu():
                         idx = input("Enter scan number to view details: ")
                         if idx.isdigit() and 1 <= int(idx) <= len(history):
                             entry = history[int(idx)-1]
-                            print("")
+                            os.system("printf '\033[2J\033[3J\033[H'")  
                             print("-- Scan Details --")
                             print(f"Timestamp: {entry['timestamp']}")
                             print(f"Target: {entry['target']}")
