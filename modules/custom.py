@@ -35,6 +35,7 @@ def menu():
             output = f"Error: {e}"
         saves.add_history(target, " ".join(flags), " ".join(full_cmd_list), output)
         print("Scan complete and saved")
+        input("> ")
         os.system("printf '\033[2J\033[3J\033[H'")
         tryagainmenu()
 
