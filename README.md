@@ -30,7 +30,7 @@ Feature list is short but plentiful
       - For example a saved command "Nmap 192.168.256.5 -sA" can be swapped out with the new target "192.168.365.41" and the new command would be "Nmap 192.168.365.41 -sA"
 - Allow for users to add in and run/save their own commands that they've used before by just inputting it
   - No need to add in "sudo nmap" as the program takes care of that
-- Command clearing (a hotfix until I can solve the issue of no overwriting when you want to remove a flag or change a value)
+- Command clearing
 - Fully modular code, making it more efficient and prettier on the source side
   - Also allows for an easier time to customise the code yourself if wanted
 - Most importantly: Dumbed-down explanation of what each flag does so you know what it does when you choose it :D
