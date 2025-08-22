@@ -33,8 +33,9 @@ class ScanContext:
             print("Please provide a target/flag before running")
             print("")
             input("Press enter to continue")
+            self.base_cmd = ["sudo", "nmap"]
             self.flags = []
-            self.target = None
+            self.target = ""
             print("Going back to main menu")
             os.system("printf '\033[2J\033[3J\033[H'")
         else:
@@ -51,7 +52,8 @@ class ScanContext:
                 output = f"Error: {e}"
                 print("")
             input("Press enter to continue")
+            self.base_cmd = ["sudo", "nmap"]
             self.flags = []
-            self.target = None
+            self.target = ""
             print("Going back to main menu")
             os.system("printf '\033[2J\033[3J\033[H'")
