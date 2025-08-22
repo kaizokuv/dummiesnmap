@@ -33,6 +33,12 @@ Feature list is short but plentiful
 - Command clearing
 - Fully modular code, making it more efficient and prettier on the source side
   - Also allows for an easier time to customise the code yourself if wanted
+- Auto-updating for Nmap to make sure it's up to date
+  - Auto-detects your distro and runs through your package manager to install/update Nmap (currently supported below)
+    - pacman (Arch-based)
+    - dnf (Fedora-based)
+    - apt (Ubuntu-based)
+    - (Will add more if needed, doing mainstream for now)
 - Most importantly: Dumbed-down explanation of what each flag does so you know what it does when you choose it :D
 - More to come :D
 

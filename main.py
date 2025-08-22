@@ -1,4 +1,5 @@
 import os
+from modules import nmapupdate
 from modules.ctx import ScanContext
 from modules import saves
 from modules import custom
@@ -6,9 +7,8 @@ from modules import exceptions
 from modules.exceptions import backtomain
 from modules import targetspec, scantech, hostdiscovery, portspecandscanorder, serviceverdetect, osdetec, nse, timingandperf, firewallandidsevas, outputs, others
 
-
-
 def main():
+    nmapupdate.updatenmap()
     os.system("printf '\033[2J\033[3J\033[H'")
     ctx = ScanContext()
     while True:
