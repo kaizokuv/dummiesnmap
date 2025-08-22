@@ -40,6 +40,7 @@ def menu():
 
 def tryagainmenu():
     while True:
+        os.system("printf '\033[2J\033[3J\033[H'")
         print("-- What now? --")
         print("1. Run/save another command")
         print("2. History")
@@ -54,7 +55,7 @@ def tryagainmenu():
                 menu()
             case "2":
                 os.system("printf '\033[2J\033[3J\033[H'")
-                saves.menu()
+                saves.historymenu()
             case "3":
                 os.system("printf '\033[2J\033[3J\033[H'")
                 raise backtomain

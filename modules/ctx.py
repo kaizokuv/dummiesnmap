@@ -9,10 +9,10 @@ class ScanContext:
         self.target = ""
 
     def add_flag(self, flag, value=None):
-        if value is not None:
-            self.flags.extend([flag, str(value)])
-        else:
+        if value is None:
             self.flags.append(flag)
+        else:
+            self.flags.extend([flag, str(value)])
 
     def set_target(self, target):
         self.target = target

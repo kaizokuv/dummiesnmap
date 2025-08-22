@@ -60,10 +60,10 @@ def menu(ctx: ScanContext):
         if badsum == "y": ctx.add_flag("--badsum")
         if ipoptions != "n": ctx.add_flag("--ip-options", ipoptions)
 
-        os.system("printf '\033[2J\033[3J\033[H'")
-        print("Current command:", ctx.get_command())
-        print("")
         while True:
+            os.system("printf '\033[2J\033[3J\033[H'")
+            print("Current command:", ctx.get_command())
+            print("")
             print("-- What now? --")
             print("1. Run Nmap with current command")
             print("2. Add more flags")

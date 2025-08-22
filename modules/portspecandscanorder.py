@@ -24,10 +24,10 @@ def menu(ctx: ScanContext):
         if r == "y": ctx.add_flag("-r")
         if topports != "n": ctx.add_flag("--top-ports", topports)
 
-        os.system("printf '\033[2J\033[3J\033[H'")
-        print("Current command:", ctx.get_command())
-        print("")
         while True:
+            os.system("printf '\033[2J\033[3J\033[H'")
+            print("Current command:", ctx.get_command())
+            print("")
             print("-- What now? --")
             print("1. Run Nmap with current command")
             print("2. Add more flags")
@@ -92,5 +92,4 @@ def menu(ctx: ScanContext):
                     os.system("printf '\033[2J\033[3J\033[H'")
                     raise backtomain
                 case _:
-                    print("Please select a valid option.")
                     print("")

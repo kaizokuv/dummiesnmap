@@ -26,8 +26,6 @@ Feature list is short but plentiful
     - Full command
   - Cross session, so you won't have to worry about it getting erased after a session has ended
     - All of the user history will be saved in a .json file in the dummiesnmap folder
-    - Allows for users to use an old save and swap out the target to allow for the reuse of the command
-      - For example a saved command "Nmap 192.168.256.5 -sA" can be swapped out with the new target "192.168.365.41" and the new command would be "Nmap 192.168.365.41 -sA"
 - Allow for users to add in and run/save their own commands that they've used before by just inputting it
   - No need to add in "sudo nmap" as the program takes care of that
 - Command clearing

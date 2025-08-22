@@ -103,14 +103,13 @@ def main():
                     custom.menu()
                 case "5":
                     os.system("printf '\033[2J\033[3J\033[H'")
-                    saves.menu()
+                    saves.historymenu()
                 case "6":
                     print("Thank you, please come again")
                     print("Any ideas for future updates are welcome, hmu on Github :D")
                     print("")
                     exit()
                 case _:
-                    print("Please select a valid option.")
                     print("")
         except exceptions.backtomain:
             continue
