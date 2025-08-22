@@ -9,10 +9,10 @@ from modules import targetspec, scantech, hostdiscovery, portspecandscanorder, s
 
 def main():
     nmapupdate.updatenmap()
-    os.system("printf '\033[2J\033[3J\033[H'")
     ctx = ScanContext()
     while True:
         try:
+            os.system("printf '\033[2J\033[3J\033[H'")
             print("")
             print("██████╗ ██╗   ██╗███╗   ███╗███╗   ███╗██╗███████╗███████╗███╗   ██╗███╗   ███╗ █████╗ ██████╗")
             print("██╔══██╗██║   ██║████╗ ████║████╗ ████║██║██╔════╝██╔════╝████╗  ██║████╗ ████║██╔══██╗██╔══██╗")

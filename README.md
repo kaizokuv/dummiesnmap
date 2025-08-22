@@ -1,6 +1,6 @@
 # DummiesNmap
 
-A dumbed-down version of the very popular Nmap tool for the people like me, who can't remember 50 BAJILLION FLAGS
+A dumbed-down version of the very popular Nmap tool for the people like me, who can't remember 50 BAJILLION FLAGS (as for needing nmap, don't worry if you don't have it installed, the program will take care of it for you :D)
 
 ## Current Features
 Feature list is short but plentiful
