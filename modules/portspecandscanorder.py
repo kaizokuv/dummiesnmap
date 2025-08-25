@@ -1,4 +1,4 @@
-import os
+from modules.exceptions import clear_screen
 from modules.ctx import ScanContext
 from modules import targetspec, scantech, hostdiscovery, serviceverdetect, osdetec, nse, timingandperf, firewallandidsevas, outputs, others
 from modules.exceptions import backtomain
@@ -25,7 +25,7 @@ def menu(ctx: ScanContext):
         if topports != "n": ctx.add_flag("--top-ports", topports)
 
         while True:
-            os.system("printf '\033[2J\033[3J\033[H'")
+            clear_screen()
             print("Current command:", ctx.get_command())
             print("")
             print("-- What now? --")
@@ -56,40 +56,40 @@ def menu(ctx: ScanContext):
 
                         match flagcat:
                             case "1":
-                                os.system("printf '\033[2J\033[3J\033[H'")
+                                clear_screen()
                                 targetspec.menu(ctx)
                             case "2":
-                                os.system("printf '\033[2J\033[3J\033[H'")
+                                clear_screen()
                                 scantech.menu(ctx)
                             case "3":
-                                os.system("printf '\033[2J\033[3J\033[H'")
+                                clear_screen()
                                 hostdiscovery.menu(ctx)
                             case "4":
-                                os.system("printf '\033[2J\033[3J\033[H'")
+                                clear_screen()
                                 serviceverdetect.menu(ctx)
                             case "5":
-                                os.system("printf '\033[2J\033[3J\033[H'")
+                                clear_screen()
                                 osdetec.menu(ctx)
                             case "6":
-                                os.system("printf '\033[2J\033[3J\033[H'")
+                                clear_screen()
                                 nse.menu(ctx)
                             case "7":
-                                os.system("printf '\033[2J\033[3J\033[H'")
+                                clear_screen()
                                 timingandperf.menu(ctx)
                             case "8":
-                                os.system("printf '\033[2J\033[3J\033[H'")
+                                clear_screen()
                                 firewallandidsevas.menu(ctx)
                             case "9":
-                                os.system("printf '\033[2J\033[3J\033[H'")
+                                clear_screen()
                                 outputs.menu(ctx)
                             case "10":
-                                os.system("printf '\033[2J\033[3J\033[H'")
+                                clear_screen()
                                 others.menu(ctx)
                             case _:
                                 print("Please select a valid option.")
                                 print("")
                 case "3":
-                    os.system("printf '\033[2J\033[3J\033[H'")
+                    clear_screen()
                     raise backtomain
                 case _:
                     print("")

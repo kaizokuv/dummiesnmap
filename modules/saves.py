@@ -2,6 +2,7 @@ import json
 import os
 from datetime import datetime
 from modules.exceptions import backtomain
+from modules.exceptions import clear_screen
 
 HISTORY_FILE = "scan_history.json"
 
@@ -33,7 +34,7 @@ def show_history():
         print("No scan history yet.")
         print("")
         return
-    os.system("printf '\033[2J\033[3J\033[H'")
+    clear_screen()
     print("--- Scan History ---")
     for i, entry in enumerate(history, 1):
         print(f"{i}.")
@@ -56,21 +57,21 @@ def historymenu():
             case "1":
                 show_history()
                 input("Press enter to continue")    
-                os.system("printf '\033[2J\033[3J\033[H'")
+                clear_screen()
             case "2":
                 history = load_history()
                 if not history:
                     print("No history to view.")
                     print("")
                     input("Press enter to continue")    
-                    os.system("printf '\033[2J\033[3J\033[H'")
+                    clear_screen()
                 else:
                     while True:
                         show_history()
                         idx = input("Enter scan number to view details (enter n to exit): ")
                         if idx.isdigit() and 1 <= int(idx) <= len(history):
                             entry = history[int(idx)-1]
-                            os.system("printf '\033[2J\033[3J\033[H'")  
+                            clear_screen()  
                             print("-- Scan Details --")
                             print(f"Timestamp: {entry['timestamp']}")
                             print(f"Target: {entry['target']}")
@@ -81,16 +82,16 @@ def historymenu():
                             print(entry['output'])
                             print("")
                             input("Press enter to continue")    
-                            os.system("printf '\033[2J\033[3J\033[H'")
+                            clear_screen()
                             historymenu()
                         elif idx == "n":
-                            os.system("printf '\033[2J\033[3J\033[H'")
+                            clear_screen()
                             historymenu()
                         else:
                             print("Please select a valid option.")
                             print("")
                             input("Press enter to continue")
-                            os.system("printf '\033[2J\033[3J\033[H'")
+                            clear_screen()
             case "3":
                 confirm = input("Are you sure you want to clear all history? (y/n): ")
                 print("")
@@ -99,9 +100,9 @@ def historymenu():
                     print("History cleared.")
                     print("")
                 input("Press enter to continue")    
-                os.system("printf '\033[2J\033[3J\033[H'")
+                clear_screen()
             case"4":
-                os.system("printf '\033[2J\033[3J\033[H'")
+                clear_screen()
                 raise backtomain
             case _:
                 print("")

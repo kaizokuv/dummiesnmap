@@ -1,6 +1,6 @@
-import os
 import subprocess
 from modules import saves
+from modules.exceptions import clear_screen
 
 class ScanContext:
     def __init__(self):
@@ -37,7 +37,7 @@ class ScanContext:
             self.flags = []
             self.target = ""
             print("Going back to main menu")
-            os.system("printf '\033[2J\033[3J\033[H'")
+            clear_screen()
         else:
             print("Running:", " ".join(final_command))
             print("")
@@ -56,4 +56,4 @@ class ScanContext:
             self.flags = []
             self.target = ""
             print("Going back to main menu")
-            os.system("printf '\033[2J\033[3J\033[H'")
+            clear_screen()

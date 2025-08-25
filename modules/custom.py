@@ -1,8 +1,8 @@
-import os
 import subprocess
 from modules.ctx import ScanContext
 from modules import saves
 from modules.exceptions import backtomain
+from modules.exceptions import clear_screen
 
 def menu():
     while True:
@@ -36,12 +36,12 @@ def menu():
         saves.add_history(target, " ".join(flags), " ".join(full_cmd_list), output)
         print("Scan complete and saved")
         input("> ")
-        os.system("printf '\033[2J\033[3J\033[H'")
+        clear_screen()
         tryagainmenu()
 
 def tryagainmenu():
     while True:
-        os.system("printf '\033[2J\033[3J\033[H'")
+        clear_screen()
         print("-- What now? --")
         print("1. Run/save another command")
         print("2. History")
@@ -52,13 +52,13 @@ def tryagainmenu():
 
         match customcase:
             case "1":
-                os.system("printf '\033[2J\033[3J\033[H'")
+                clear_screen()
                 menu()
             case "2":
-                os.system("printf '\033[2J\033[3J\033[H'")
+                clear_screen()
                 saves.historymenu()
             case "3":
-                os.system("printf '\033[2J\033[3J\033[H'")
+                clear_screen()
                 raise backtomain
             case "4":
                 print("Thank you, please come again")
