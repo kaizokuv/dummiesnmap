@@ -35,7 +35,7 @@ Feature list is short but plentiful
   - Auto-detects your OS and runs through your package manager to install/update Nmap (currently supported below)
     - pacman (Arch-based)
     - dnf and yum (Fedora-based)
-    - apt (Ubuntu-based)
+    - apt (Debian-based)
     - choco (Windows)
     - homebrew (MacOS)
     - (Will add more if needed, doing mainstream for now)
