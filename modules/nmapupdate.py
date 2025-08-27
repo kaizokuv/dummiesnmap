@@ -68,7 +68,7 @@ def updatenmap():
                     print("Nmap is up to date")
                     print("")
                     print("Welcome to DummiesNmap")
-                    input("> ")
+                    input("Press enter to continue..")
                     return
                 except Exception as e:
                     print(f"Failed to update Nmap: {e}")
@@ -76,7 +76,7 @@ def updatenmap():
                 print("Skipping updates, going to main menu")
                 print("")
                 print("Welcome to DummiesNmap")
-                input("> ")
+                input("Press enter to continue..")
                 return
             case _:
                 print("Please select a valid option.")
