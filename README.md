@@ -52,10 +52,28 @@ In addition I've added a history feature, which should allow you to go back and 
 So behold the third of many repos to come about my progress and improvement. If anyone who sees this has any tips, ideas or comments, just lemme know, all feedback is much appreciated.
 
 ## How to run
+
+There are afew ways you could install DummiesNmap, which are as follows:
+
+### Github
+
 ```bash
 git clone https://github.com/kaizokuv/dummiesnmap.git
 cd dummiesnmap
 python3 main.py
+```
+
+### Building it from the AUR
+
+```bash
+git clone ssh://aur@aur.archlinux.org/dummiesnmap.git
+cd dummiesnmap
+makepkg -si
+```
+
+### Using yay (for Arch users)
+```bash
+yay -S dummiesnmap
 ```
 
 ## For those of you who are lazy and willing to tweak around with aliases

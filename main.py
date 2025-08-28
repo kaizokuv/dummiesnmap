@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from modules.exceptions import clear_screen
 from modules import nmapupdate
 from modules.ctx import ScanContext
